@@ -16,7 +16,7 @@ copilot plugin install atlassian@jomaxso-copilot-marketplace
 
 ## Prerequisites
 
-- **Atlassian CLI (`acli`)** — install scripts are in `skills/jira/scripts/`:
+- **Atlassian CLI (`acli`)** — install scripts in `skills/jira/scripts/`:
   - Windows: `.\install-windows.ps1`
   - Linux: `chmod +x install-linux.sh && ./install-linux.sh`
   - macOS: `chmod +x install-macos.sh && ./install-macos.sh`
@@ -31,4 +31,5 @@ After installing the plugin, the `jira` skill is available automatically. Verify
 ```
 
 Then ask Copilot to help with Jira — creating stories, editing tickets, searching with JQL, transitioning issues, and more.
+
 

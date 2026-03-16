@@ -2,7 +2,7 @@
 
 Personal GitHub Copilot CLI marketplace with custom plugins, agents, and skills.
 
-## Add this marketplace
+## Register this marketplace
 
 ```bash
 copilot plugin marketplace add jomaxso/copilot-marketplace
