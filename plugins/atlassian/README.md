@@ -1,11 +1,11 @@
-# Jira Plugin
+# Atlassian Plugin
 
 Manage Jira Cloud work items from the terminal using the Atlassian CLI (`acli`).
 
 ## Install
 
 ```bash
-copilot plugin install jira@jomaxso-copilot-marketplace
+copilot plugin install atlassian@jomaxso-copilot-marketplace
 ```
 
 ## What's included

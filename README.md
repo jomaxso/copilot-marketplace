@@ -12,16 +12,16 @@ copilot plugin marketplace add jomaxso/copilot-marketplace
 
 | Plugin | Description | Version |
 |--------|-------------|---------|
-| `jira` | Manage Jira Cloud work items via `acli` (create, edit, search, transition, ADF descriptions) | 1.0.0 |
+| `atlassian` | Manage Jira Cloud work items via `acli` (create, edit, search, transition, ADF descriptions) | 1.0.0 |
 
 ## Install a plugin
 
 ```bash
 # Install from this marketplace
-copilot plugin install jira@jomaxso-copilot-marketplace
+copilot plugin install atlassian@jomaxso-copilot-marketplace
 
 # Or install directly
-copilot plugin install jomaxso/copilot-marketplace:plugins/jira
+copilot plugin install jomaxso/copilot-marketplace:plugins/atlassian
 ```
 
 ## Adding new plugins
@@ -38,7 +38,7 @@ copilot-marketplace/
 ├── .github/plugin/
 │   └── marketplace.json      # Marketplace manifest
 └── plugins/
-    └── jira/                 # Jira management plugin
+    └── atlassian/                # Atlassian/Jira management plugin
         ├── plugin.json
         └── skills/
             └── jira/
