@@ -73,15 +73,15 @@ acli jira project list
 This outputs all projects the user has access to with their keys and names. Present the list clearly to the user and **ask them which project they want to work with** before proceeding. Example prompt:
 
 > The following Jira projects are available:
-> - `QSPLM` — SlothPLM
-> - `INFRA` — Infrastructure
-> - `OPS` — Operations
+> - `KEY` — Project Name 1
+> - `PROJ` — Project Name 2`
+> - ...
 >
 > Which project should I use for this task?
 
 **Do NOT proceed to Step 3 until the user has explicitly confirmed or selected a project.**
 
-If the user has a clear default context (e.g., previously confirmed `QSPLM` in this session), you may suggest it as the default but still ask for confirmation.
+If the user has a clear default context (e.g., previously confirmed `KEY` in this session), you may suggest it as the default but still ask for confirmation.
 
 ### Step 3 — Execute the Task with the Selected Project Key
 
@@ -205,7 +205,7 @@ When unsure about a command, run `acli jira <entity> --help`.
 | **Create** | `acli jira workitem create` | `--summary`, `--project`, `--type`, `--assignee`, `--label`, `--description` |
 | **Bulk Create** | `acli jira workitem create-bulk` | `--from-csv`, `--from-json`, `--generate-json` |
 | **Edit** | `acli jira workitem edit` | `--key`, `--jql`, `--summary`, `--assignee`, `--labels`, `--type` |
-| **View** | `acli jira workitem view` | `QSPLM-123`, `--fields`, `--json`, `--web` |
+| **View** | `acli jira workitem view` | `KEY-123`, `--fields`, `--json`, `--web` |
 | **Search** | `acli jira workitem search` | `--jql`, `--filter`, `--fields`, `--csv`, `--json`, `--count` |
 | **Transition** | `acli jira workitem transition` | `--key`, `--jql`, `--status`, `--yes` |
 | **Assign** | `acli jira workitem assign` | `--key`, `--jql`, `--assignee` (`@me`, email) |
@@ -226,7 +226,7 @@ acli jira auth status
 # Create a Story
 acli jira workitem create \
   --summary "Implement user login page" \
-  --project "QSPLM" \
+  --project "KEY" \
   --type "Story" \
   --assignee "dev@example.com" \
   --label "frontend,sprint-42"
@@ -234,30 +234,30 @@ acli jira workitem create \
 # Create an Epic
 acli jira workitem create \
   --summary "User Authentication Module" \
-  --project "QSPLM" \
+  --project "KEY" \
   --type "Epic" \
   --description "Complete auth system with login, logout, and password reset"
 
 # Create a Bug
 acli jira workitem create \
   --summary "Login button unresponsive on mobile" \
-  --project "QSPLM" \
+  --project "KEY" \
   --type "Bug" \
   --assignee "@me"
 
 # Create a Task with description from file
 acli jira workitem create \
   --summary "Set up CI/CD pipeline" \
-  --project "QSPLM" \
+  --project "KEY" \
   --type "Task" \
   --from-file description.txt
 
 # Create a sub-task under a parent
 acli jira workitem create \
   --summary "Write unit tests for login" \
-  --project "QSPLM" \
+  --project "KEY" \
   --type "Sub-task" \
-  --parent "QSPLM-42"
+  --parent "KEY-42"
 
 # Create from JSON template
 acli jira workitem create --generate-json   # outputs template
@@ -268,11 +268,11 @@ acli jira workitem create --from-json workitem.json
 
 ```bash
 # List all issues in a project
-acli jira workitem search --jql "project = QSPLM" --paginate
+acli jira workitem search --jql "project = KEY" --paginate
 
 # Search with specific fields as CSV
 acli jira workitem search \
-  --jql "project = QSPLM AND type = Story AND status = 'In Progress'" \
+  --jql "project = KEY AND type = Story AND status = 'In Progress'" \
   --fields "key,summary,assignee,status,priority" \
   --csv
 
@@ -281,17 +281,17 @@ acli jira workitem search --jql "assignee = currentUser() AND status != Done"
 
 # Bugs in current sprint
 acli jira workitem search \
-  --jql "project = QSPLM AND type = Bug AND sprint in openSprints()" \
+  --jql "project = KEY AND type = Bug AND sprint in openSprints()" \
   --json
 
 # Recently updated (last 7 days)
-acli jira workitem search --jql "project = QSPLM AND updated >= -7d"
+acli jira workitem search --jql "project = KEY AND updated >= -7d"
 
 # Count issues only
-acli jira workitem search --jql "project = QSPLM AND status = 'To Do'" --count
+acli jira workitem search --jql "project = KEY AND status = 'To Do'" --count
 
 # Open in browser
-acli jira workitem search --jql "project = QSPLM" --web
+acli jira workitem search --jql "project = KEY" --web
 
 # Use a saved filter
 acli jira workitem search --filter 10001 --csv
@@ -347,7 +347,7 @@ acli jira workitem transition --key "TEAM-1,TEAM-2,TEAM-3" --status "Done"
 
 # Transition all issues matching JQL (skip confirmation)
 acli jira workitem transition \
-  --jql "project = QSPLM AND status = 'In Review'" \
+  --jql "project = KEY AND status = 'In Review'" \
   --status "Done" \
   --yes
 
@@ -366,7 +366,7 @@ acli jira workitem assign --key "TEAM-123" --assignee "dev@example.com"
 
 # Bulk assign via JQL
 acli jira workitem assign \
-  --jql "project = QSPLM AND status = 'To Do' AND assignee is EMPTY" \
+  --jql "project = KEY AND status = 'To Do' AND assignee is EMPTY" \
   --assignee "dev@example.com" \
   --yes
 
@@ -403,13 +403,13 @@ acli jira workitem comment delete --key "TEAM-123" --id 10001
 ```bash
 # Bulk edit: change assignee for all "In Review" issues
 acli jira workitem edit \
-  --jql "project = QSPLM AND status = 'In Review'" \
+  --jql "project = KEY AND status = 'In Review'" \
   --assignee "reviewer@example.com" \
   --yes
 
 # Bulk transition: move all bugs to "In Progress"
 acli jira workitem transition \
-  --jql "project = QSPLM AND type = Bug AND status = 'To Do'" \
+  --jql "project = KEY AND type = Bug AND status = 'To Do'" \
   --status "In Progress" \
   --yes --ignore-errors
 
@@ -428,7 +428,7 @@ acli jira workitem create-bulk --from-json issues.json --yes
 
 ```bash
 # Link one issue as blocking another
-acli jira workitem link create --out "QSPLM-10" --in "QSPLM-20" --type "Blocks"
+acli jira workitem link create --out "KEY-10" --in "KEY-20" --type "Blocks"
 
 # List links on an issue
 acli jira workitem link list --key "TEAM-10" --json
@@ -450,10 +450,10 @@ acli jira workitem link delete --id 10001
 acli jira project list --json
 
 # View project details
-acli jira project view --key "QSPLM" --json
+acli jira project view --key "KEY" --json
 
 # List boards
-acli jira board search --project "QSPLM"
+acli jira board search --project "KEY"
 
 # List sprints on a board
 acli jira board list-sprints --id 123 --state active,closed --json
@@ -464,7 +464,7 @@ acli jira sprint list-workitems --sprint 42 --board 123 \
 
 # Sprint report via JQL
 acli jira workitem search \
-  --jql "project = QSPLM AND sprint = 42" \
+  --jql "project = KEY AND sprint = 42" \
   --fields "key,summary,status,assignee" \
   --csv > sprint-report.csv
 ```
@@ -488,31 +488,31 @@ acli jira workitem search \
 --jql "assignee = currentUser()"
 
 # Unassigned issues
---jql "project = QSPLM AND assignee is EMPTY"
+--jql "project = KEY AND assignee is EMPTY"
 
 # By type
---jql "project = QSPLM AND type = Bug"
---jql "project = QSPLM AND type = Story"
---jql "project = QSPLM AND type = Epic"
---jql "project = QSPLM AND type = Task"
+--jql "project = KEY AND type = Bug"
+--jql "project = KEY AND type = Story"
+--jql "project = KEY AND type = Epic"
+--jql "project = KEY AND type = Task"
 
 # By status
---jql "project = QSPLM AND status = 'In Progress'"
---jql "project = QSPLM AND status != Done"
+--jql "project = KEY AND status = 'In Progress'"
+--jql "project = KEY AND status != Done"
 
 # Multiple criteria
---jql "project = QSPLM AND type = Bug AND priority = High AND status != Done"
+--jql "project = KEY AND type = Bug AND priority = High AND status != Done"
 
 # Sprint-specific
---jql "project = QSPLM AND sprint = 42"
---jql "project = QSPLM AND sprint in openSprints()"
+--jql "project = KEY AND sprint = 42"
+--jql "project = KEY AND sprint in openSprints()"
 
 # Time-based
---jql "project = QSPLM AND created >= -7d"
---jql "project = QSPLM AND updated >= -30d"
+--jql "project = KEY AND created >= -7d"
+--jql "project = KEY AND updated >= -30d"
 
 # Text search
---jql "project = QSPLM AND summary ~ 'login'"
+--jql "project = KEY AND summary ~ 'login'"
 ```
 
 ## Common Mistakes — STOP and Re-read
