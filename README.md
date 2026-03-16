@@ -1,8 +1,8 @@
-# Copilot CLI Marketplace
+# jomaxso — Copilot CLI Marketplace
 
-Personal GitHub Copilot CLI marketplace containing custom plugins, agents, and skills.
+Personal GitHub Copilot CLI marketplace with custom plugins, agents, and skills.
 
-## Install this marketplace
+## Add this marketplace
 
 ```bash
 copilot plugin marketplace add jomaxso/copilot-marketplace
@@ -12,36 +12,37 @@ copilot plugin marketplace add jomaxso/copilot-marketplace
 
 | Plugin | Description | Version |
 |--------|-------------|---------|
-| `atlassian` | Manage Jira Cloud work items via `acli` (create, edit, search, transition, ADF descriptions) | 1.0.0 |
+| [`atlassian`](./plugins/atlassian) | Manage Jira Cloud work items via `acli` — create, edit, search, transition issues with proper ADF formatting | 1.0.0 |
 
 ## Install a plugin
 
 ```bash
-# Install from this marketplace
+# From marketplace
 copilot plugin install atlassian@jomaxso-copilot-marketplace
 
-# Or install directly
+# Directly from GitHub
 copilot plugin install jomaxso/copilot-marketplace:plugins/atlassian
 ```
 
-## Adding new plugins
+## Add a new plugin
 
-1. Create a new directory under `plugins/<name>/`
-2. Add a `plugin.json` manifest
-3. Add `skills/`, `agents/`, `.mcp.json` etc. as needed
-4. Register the plugin in `.github/plugin/marketplace.json`
+1. Create `plugins/<name>/` with a `plugin.json` manifest
+2. Add `skills/`, `agents/`, `.mcp.json` as needed
+3. Register the entry in `.github/plugin/marketplace.json`
+4. Push — done.
 
-## Structure
+## Repository structure
 
 ```
 copilot-marketplace/
 ├── .github/plugin/
-│   └── marketplace.json      # Marketplace manifest
+│   └── marketplace.json          # Marketplace manifest (required)
 └── plugins/
-    └── atlassian/                # Atlassian/Jira management plugin
+    └── atlassian/                 # Atlassian tools plugin
         ├── plugin.json
+        ├── README.md
         └── skills/
-            └── jira/
+            └── jira/              # Jira management skill
                 ├── SKILL.md
                 ├── references/
                 │   └── REFERENCE.md
@@ -50,3 +51,4 @@ copilot-marketplace/
                     ├── install-linux.sh
                     └── install-macos.sh
 ```
+

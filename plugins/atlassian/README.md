@@ -1,6 +1,6 @@
 # Atlassian Plugin
 
-Manage Jira Cloud work items from the terminal using the Atlassian CLI (`acli`).
+Manage Jira Cloud work items directly from the terminal using the Atlassian CLI (`acli`).
 
 ## Install
 
@@ -8,21 +8,27 @@ Manage Jira Cloud work items from the terminal using the Atlassian CLI (`acli`).
 copilot plugin install atlassian@jomaxso-copilot-marketplace
 ```
 
-## What's included
+## Included skills
 
-- **Skill `jira`** — Full workflow for creating, editing, searching, and transitioning Jira work items with correct ADF formatting
+| Skill | Description |
+|-------|-------------|
+| `jira` | Create, edit, search, and transition Jira work items with proper ADF-formatted descriptions |
 
 ## Prerequisites
 
-- Atlassian CLI (`acli`) installed — see `skills/jira/scripts/` for install scripts
-- Atlassian Cloud account with appropriate permissions
+- **Atlassian CLI (`acli`)** — install scripts are in `skills/jira/scripts/`:
+  - Windows: `.\install-windows.ps1`
+  - Linux: `chmod +x install-linux.sh && ./install-linux.sh`
+  - macOS: `chmod +x install-macos.sh && ./install-macos.sh`
+- An Atlassian Cloud account with the required permissions
 
-## Quick start
+## Usage
 
-After installing the plugin, the `jira` skill is automatically available:
+After installing the plugin, the `jira` skill is available automatically. Verify with:
 
 ```
-/skills list    # verify skill is loaded
+/skills list
 ```
 
-Then just ask Copilot to manage your Jira issues!
+Then ask Copilot to help with Jira — creating stories, editing tickets, searching with JQL, transitioning issues, and more.
+
