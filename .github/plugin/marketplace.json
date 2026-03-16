@@ -1,0 +1,25 @@
+{
+  "name": "jomaxso-copilot-marketplace",
+  "owner": {
+    "name": "Johannes-Max Sorge",
+    "email": "johannes-max.sorge@avanade.com"
+  },
+  "metadata": {
+    "description": "Personal GitHub Copilot CLI marketplace — custom plugins, agents, and skills",
+    "version": "1.0.0",
+    "pluginRoot": "./plugins"
+  },
+  "plugins": [
+    {
+      "name": "jira",
+      "source": "jira",
+      "description": "Manage Jira Cloud work items from the CLI using the Atlassian CLI (acli). Covers creating, editing, searching, and transitioning Stories, Epics, Tasks, and Bugs with ADF-formatted descriptions.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Johannes-Max Sorge"
+      },
+      "license": "MIT",
+      "keywords": ["jira", "atlassian", "acli", "project-management"]
+    }
+  ]
+}
