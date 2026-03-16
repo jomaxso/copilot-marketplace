@@ -1,4 +1,4 @@
-# jomaxso — Copilot CLI Marketplace
+# Copilot CLI Marketplace
 
 Personal GitHub Copilot CLI marketplace with custom plugins, agents, and skills.
 
@@ -18,7 +18,7 @@ copilot plugin marketplace add jomaxso/copilot-marketplace
 
 ```bash
 # From marketplace
-copilot plugin install atlassian@jomaxso-copilot-marketplace
+copilot plugin install atlassian@jomaxso-plugins
 
 # Directly from GitHub
 copilot plugin install jomaxso/copilot-marketplace:plugins/atlassian

@@ -5,7 +5,7 @@ Manage Jira Cloud work items directly from the terminal using the Atlassian CLI 
 ## Install
 
 ```bash
-copilot plugin install atlassian@jomaxso-copilot-marketplace
+copilot plugin install atlassian@jomaxso-plugins
 ```
 
 ## Included skills
