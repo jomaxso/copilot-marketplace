@@ -1,5 +1,5 @@
 {
-  "name": "mariadb",
+  "name": "database",
   "description": "Manage MariaDB databases from the CLI using the mariadb client. Covers connecting, creating databases and tables, running queries, managing users, backing up and restoring data, and generating or applying configuration files (my.cnf / my.ini) with AI assistance.",
   "version": "1.0.0",
   "author": {
