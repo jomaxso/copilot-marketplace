@@ -61,7 +61,9 @@ Write-Host "[2/4] Installing MariaDB client tools ..." -ForegroundColor Yellow
 if ($useWinget) {
     # winget installs the full MariaDB server package (which includes the client tools).
     # The package ID for the community edition is MariaDB.Server.
+    # NOTE: No client-only winget package exists; we install the server package and warn the user.
     Write-Host "      Running: winget install --id MariaDB.Server --accept-package-agreements --accept-source-agreements" -ForegroundColor Cyan
+    Write-Host "      ⚠ winget installs the full server package (includes client tools). Consider -Method MSI for client-only install." -ForegroundColor Yellow
 
     $existingInstall = winget list --id MariaDB.Server 2>&1 | Select-String "MariaDB"
     if ($existingInstall) {
@@ -165,19 +167,31 @@ default-character-set = utf8mb4
 # ── Step 4: Verify ─────────────────────────────────────────────────────────
 Write-Host "[4/4] Verifying installation ..." -ForegroundColor Yellow
 
+# First try PATH, then scan common install directories on disk
 $mariadbExe = $null
 foreach ($candidate in @("mariadb", "mysql")) {
     try {
         $null = Get-Command $candidate -ErrorAction Stop
-        $mariadbExe = $candidate
+        $mariadbExe = (Get-Command $candidate).Source
         break
     } catch {}
+}
+
+# Fallback: scan Program Files for the binary (PATH may not be refreshed yet)
+if ($null -eq $mariadbExe) {
+    $diskSearch = Get-ChildItem "C:\Program Files\MariaDB*\bin\mariadb.exe" -ErrorAction SilentlyContinue |
+        Sort-Object FullName -Descending |
+        Select-Object -First 1
+    if ($diskSearch) {
+        $mariadbExe = $diskSearch.FullName
+    }
 }
 
 if ($null -ne $mariadbExe) {
     $version = & $mariadbExe --version 2>&1
     Write-Host ""
     Write-Host "=== Installation successful! ===" -ForegroundColor Green
+    Write-Host "  Binary: $mariadbExe"
     Write-Host "  $version"
     Write-Host ""
     Write-Host "Next steps:" -ForegroundColor Cyan
@@ -185,10 +199,13 @@ if ($null -ne $mariadbExe) {
     Write-Host "  mariadb -h 127.0.0.1 -u root -p     # connect to local server"
     Write-Host "  mariadb --help                       # show all options"
     Write-Host ""
+    Write-Host "  If 'mariadb' is not in PATH, use the full path:" -ForegroundColor Yellow
+    Write-Host "  & `"$mariadbExe`""
+    Write-Host ""
     Write-Host "Connection defaults can be stored in:" -ForegroundColor Cyan
     Write-Host "  $configFile"
 } else {
-    Write-Warning "Verification failed — mariadb.exe not found in PATH."
-    Write-Warning "Open a new terminal and try again, or add the MariaDB bin directory to PATH manually."
+    Write-Warning "Verification failed — mariadb.exe not found in PATH or standard install directories."
+    Write-Warning "Check C:\Program Files\MariaDB*\bin\ manually, or open a new terminal and try again."
     exit 1
 }

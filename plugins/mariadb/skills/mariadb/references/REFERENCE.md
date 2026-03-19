@@ -38,7 +38,11 @@ mariadb-admin [options] command
 | `--socket` | `-S` | Unix socket path (Unix/macOS only) | `-S /var/run/mysqld/mysqld.sock` |
 | `--protocol` | — | Connection protocol | `--protocol=TCP` |
 | `--ssl` | — | Enable SSL | `--ssl` |
+| `--skip-ssl` | — | Disable SSL (use when server has no SSL support) | `--skip-ssl` |
 | `--ssl-ca` | — | CA certificate path | `--ssl-ca=/etc/ssl/ca.pem` |
+| `--ssl-cert` | — | Client certificate path | `--ssl-cert=/etc/ssl/client-cert.pem` |
+| `--ssl-key` | — | Client private key path | `--ssl-key=/etc/ssl/client-key.pem` |
+| `--ssl-verify-server-cert` | — | Verify server certificate (recommended for production) | `--ssl-verify-server-cert` |
 
 ### Execution Options
 
