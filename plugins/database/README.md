@@ -12,11 +12,11 @@ copilot plugin install database@jomaxso-plugins
 
 | Skill | Description |
 |-------|-------------|
-| `database` | Connect to MariaDB, run queries, manage databases and users, create and apply configuration files (my.cnf / my.ini) |
+| `mariadb` | Connect to MariaDB, run queries, manage databases and users, create and apply configuration files (my.cnf / my.ini) |
 
 ## Prerequisites
 
-- **MariaDB client tools** — install scripts in `skills/database/scripts/`:
+- **MariaDB client tools** — install scripts in `skills/mariadb/scripts/`:
   - Windows: `.\install-windows.ps1`
   - Linux: `chmod +x install-linux.sh && ./install-linux.sh`
   - macOS: `chmod +x install-macos.sh && ./install-macos.sh`
@@ -24,7 +24,7 @@ copilot plugin install database@jomaxso-plugins
 
 ## Usage
 
-After installing the plugin, the `database` skill is available automatically. Verify with:
+After installing the plugin, the `mariadb` skill is available automatically. Verify with:
 
 ```
 /skills list

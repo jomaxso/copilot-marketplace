@@ -1,5 +1,5 @@
 ---
-name: database
+name: mariadb
 description: >
   Use when managing MariaDB databases from the command line using the mariadb CLI client.
   Covers connecting to servers, creating and managing databases, running SQL queries,
