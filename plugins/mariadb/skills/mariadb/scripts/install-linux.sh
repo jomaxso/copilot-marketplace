@@ -89,7 +89,18 @@ case "$PKG_FAMILY" in
         echo -e "${YELLOW}      Unknown distribution. Attempting manual install from MariaDB repo ...${NC}"
         if command -v curl >/dev/null 2>&1; then
             echo "      Downloading mariadb_repo_setup ..."
-            curl -fsSL https://downloads.mariadb.com/MariaDB/mariadb_repo_setup | $SUDO bash
+            TMPSCRIPT=$(mktemp /tmp/mariadb_repo_setup.XXXXXX)
+            curl -fsSL https://downloads.mariadb.com/MariaDB/mariadb_repo_setup -o "$TMPSCRIPT"
+            echo -e "${CYAN}      Downloaded repo setup script to: $TMPSCRIPT${NC}"
+            echo -e "${YELLOW}      Please review the script before executing.${NC}"
+            read -r -p "      Execute this script with elevated privileges? [y/N] " answer
+            if [[ "$answer" =~ ^[yY] ]]; then
+                $SUDO bash "$TMPSCRIPT"
+                rm -f "$TMPSCRIPT"
+            else
+                echo -e "${RED}      Aborted. You can review the script at: $TMPSCRIPT${NC}"
+                exit 1
+            fi
             if command -v apt-get >/dev/null 2>&1; then
                 $SUDO apt-get install -y mariadb-client
             elif command -v yum >/dev/null 2>&1; then

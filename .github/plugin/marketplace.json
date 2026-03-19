@@ -16,10 +16,16 @@
       "description": "Manage Jira Cloud work items from the CLI using the Atlassian CLI (acli). Covers creating, editing, searching, and transitioning Stories, Epics, Tasks, and Bugs with ADF-formatted descriptions.",
       "version": "1.0.0",
       "author": {
-        "name": "Johannes-Max Sorge"
+        "name": "Johannes-Max Sorge",
+        "email": "jomaxso@outlook.com"
       },
       "license": "MIT",
-      "keywords": ["jira", "atlassian", "acli", "project-management"]
+      "keywords": [
+        "jira",
+        "atlassian",
+        "acli",
+        "project-management"
+      ]
     },
     {
       "name": "mariadb",
@@ -27,10 +33,18 @@
       "description": "Manage MariaDB databases from the CLI using the mariadb client. Covers connecting, creating databases and tables, running queries, managing users, backing up and restoring data, and generating or applying configuration files (my.cnf / my.ini) with AI assistance.",
       "version": "1.0.0",
       "author": {
-        "name": "Johannes-Max Sorge"
+        "name": "Johannes-Max Sorge",
+        "email": "jomaxso@outlook.com"
       },
       "license": "MIT",
-      "keywords": ["mariadb", "mysql", "database", "sql", "cli", "my.cnf"]
+      "keywords": [
+        "mariadb",
+        "mysql",
+        "database",
+        "sql",
+        "cli",
+        "my.cnf"
+      ]
     }
   ]
 }

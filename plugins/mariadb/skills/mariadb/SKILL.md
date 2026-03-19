@@ -215,9 +215,14 @@ Write-Host "Proposed config written to: $tmpFile"
 # After review, copy to the MariaDB data directory
 Copy-Item $tmpFile "C:\ProgramData\MariaDB\data\my.ini" -Force
 
-# Restart MariaDB service
-net stop mariadb
-net start mariadb
+# Restart MariaDB service (find by display name to handle different service names)
+$svc = Get-Service | Where-Object { $_.DisplayName -like "*MariaDB*" } | Select-Object -First 1
+if ($svc) {
+    Restart-Service -Name $svc.Name -Force
+    Write-Host "Restarted service: $($svc.DisplayName)" -ForegroundColor Green
+} else {
+    Write-Warning "MariaDB service not found. Start it manually or check the service name."
+}
 ```
 
 ### Store credentials securely (avoid typing passwords)
