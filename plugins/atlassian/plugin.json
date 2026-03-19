@@ -1,12 +1,12 @@
 {
   "name": "atlassian",
-  "description": "Manage Jira Cloud work items from the CLI using the Atlassian CLI (acli). Covers creating, editing, searching, and transitioning Stories, Epics, Tasks, and Bugs with ADF-formatted descriptions.",
-  "version": "1.0.0",
+  "description": "Manage Jira Cloud work items via the Atlassian CLI (acli) and Confluence Cloud content via curl and the REST API. Covers Jira stories, epics, tasks, and bugs with ADF descriptions, plus Confluence pages, comments, attachments, labels, and CQL search.",
+  "version": "1.1.0",
   "author": {
     "name": "Johannes-Max Sorge",
     "email": "jomaxso@outlook.com"
   },
   "license": "MIT",
-  "keywords": ["jira", "atlassian", "acli", "project-management"],
+  "keywords": ["jira", "confluence", "atlassian", "acli", "project-management", "wiki"],
   "skills": "skills/"
 }
