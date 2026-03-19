@@ -1,5 +1,5 @@
 ---
-name: mariadb
+name: database
 description: >
   Use when managing MariaDB databases from the command line using the mariadb CLI client.
   Covers connecting to servers, creating and managing databases, running SQL queries,
@@ -34,6 +34,14 @@ The `mariadb` CLI client is the standard command-line tool for interacting with 
   - **macOS:** `chmod +x install-macos.sh && ./install-macos.sh`
 - A running MariaDB server (local or remote)
 - Valid credentials (user + password or `~/.my.cnf` / `%APPDATA%\MariaDB\my.ini` with stored credentials)
+
+> **Windows PATH note:** After installing via the install script, the `mariadb.exe` binary may not be immediately available in PATH (especially when called from an agent or child process). If `mariadb.exe` is not found after installation, locate it by scanning common install directories:
+> ```powershell
+> # Find the binary on disk
+> Get-ChildItem "C:\Program Files\MariaDB*\bin\mariadb.exe" -ErrorAction SilentlyContinue
+> # Then use the full path directly, e.g.:
+> & "C:\Program Files\MariaDB 12.2\bin\mariadb.exe" -h hostname -u user -p --execute "SELECT VERSION();"
+> ```
 
 ---
 
@@ -95,7 +103,52 @@ nc -zv localhost 3306
 Test-NetConnection -ComputerName 127.0.0.1 -Port 3306
 ```
 
-### Step 3 — Execute the Task
+#### SSL/TLS Connection Errors
+
+MariaDB 10.5+ clients enable SSL by default. If the server does not support SSL, the connection will fail with:
+
+```
+ERROR 2026 (HY000): TLS/SSL error: SSL is required, but the server does not support it
+```
+
+**Resolution workflow:**
+
+1. If you see `ERROR 2026`, inform the user that the server does not support SSL.
+2. Retry with `--skip-ssl` to disable client-side SSL requirement:
+
+```bash
+# Unix/macOS
+mariadb -h hostname -u user -p --skip-ssl --execute "SELECT VERSION();"
+
+# Windows (PowerShell)
+mariadb.exe -h hostname -u user -p --skip-ssl --execute "SELECT VERSION();"
+```
+
+3. Once `--skip-ssl` works, include it in **all subsequent commands** for this server session.
+4. For production environments with SSL-capable servers, prefer explicit certificate paths instead:
+
+```bash
+mariadb -h hostname -u user -p --ssl-ca=/path/to/ca.pem --ssl-verify-server-cert
+```
+
+> **Note:** `--skip-ssl` means the connection is unencrypted. This is acceptable for local/development servers or trusted networks, but should be flagged to the user for remote production servers.
+
+### Step 3 — Select the Target Database
+
+If the user did not specify a database in Step 1, determine the target database before executing the task:
+
+```bash
+# List available databases
+mariadb -h hostname -u user -p [--skip-ssl] --execute "SHOW DATABASES;"
+```
+
+- If there is only one non-system database, use it automatically.
+- If there are multiple databases, ask the user which one to use.
+- System databases (`information_schema`, `mysql`, `performance_schema`, `sys`) should be excluded from the default selection unless the user explicitly asks for them.
+
+Once the database is selected, include it in all subsequent commands via `-D dbname` or `USE dbname;`.
+
+### Step 4 — Execute the Task
 
 Only after confirming a successful connection, proceed with the actual task.
 
@@ -464,6 +517,7 @@ mariadb -u root -p --execute "SHOW VARIABLES LIKE 'slow_query%';"
 | Using `GRANT ALL ON *.*` without understanding scope | Gives root-level access | Scope grants to specific databases: `GRANT ALL ON myapp.*` |
 | Forgetting `FLUSH PRIVILEGES` after manual `mysql.user` edits | Changes don't take effect | Run `FLUSH PRIVILEGES;` or use `ALTER USER` / `CREATE USER` instead |
 | Using socket path on Windows | Sockets don't exist on Windows | Use `--host=127.0.0.1 --port=3306` on Windows |
+| Not handling `ERROR 2026` SSL/TLS error | MariaDB 10.5+ clients default to SSL; connection fails if server has no SSL | Retry with `--skip-ssl` after confirming with the user, or configure SSL certificates |
 
 ---
 
@@ -476,6 +530,7 @@ mariadb -u root -p --execute "SHOW VARIABLES LIKE 'slow_query%';"
 - ❌ Assuming socket connection works on Windows
 - ❌ Using Markdown syntax inside SQL strings (use proper INI or SQL syntax)
 - ❌ Forgetting platform differences (Unix vs. Windows) for file paths and service commands
+- ❌ Ignoring `ERROR 2026` SSL errors instead of retrying with `--skip-ssl`
 
 **→ All of these mean: Stop, re-read this skill, use the correct approach.**
 
