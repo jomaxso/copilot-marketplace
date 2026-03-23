@@ -107,25 +107,44 @@ Jira Cloud **does not render Markdown**. All descriptions and comments must be w
 
 ### Mandatory workflow for descriptions
 
-1. Build the ADF JSON object in memory
+1. Build the ADF JSON object in memory (or programmatically — see helper below)
 2. Write it to a temp file
 3. Pass it via `--description-file` (for create/edit) or `--body-file` (for comments)
 
 **Never use `--description "some markdown text"` directly.**
 
-### ADF structure reference
+### ADF structure reference — Block nodes
 
-| ADF node | Purpose | Markdown equivalent |
-|----------|---------|---------------------|
-| `{ "type": "heading", "attrs": { "level": 2 }, "content": [...] }` | Heading | `## Heading` |
+Every ADF document is `{ "version": 1, "type": "doc", "content": [ ...block nodes... ] }`.
+
+| ADF block node | Purpose | Markdown equivalent |
+|----------------|---------|---------------------|
+| `{ "type": "heading", "attrs": { "level": N }, "content": [...] }` | Heading (N = 1–6) | `## Heading` |
 | `{ "type": "paragraph", "content": [...] }` | Paragraph | plain text |
 | `{ "type": "bulletList", "content": [ listItem, ... ] }` | Bullet list | `- item` |
 | `{ "type": "orderedList", "content": [ listItem, ... ] }` | Numbered list | `1. item` |
-| `{ "type": "listItem", "content": [ paragraph ] }` | List item | list entry |
-| `{ "type": "text", "text": "..." }` | Plain text | text |
-| `{ "type": "text", "text": "...", "marks": [{ "type": "strong" }] }` | **Bold** text | `**text**` |
-| `{ "type": "text", "text": "...", "marks": [{ "type": "em" }] }` | *Italic* text | `*text*` |
+| `{ "type": "listItem", "content": [ paragraph, ... ] }` | List item (always wraps a paragraph) | list entry |
+| `{ "type": "table", "content": [ tableRow, ... ] }` | Table | `\| col \| col \|` |
+| `{ "type": "tableRow", "content": [ tableHeader \| tableCell, ... ] }` | Table row | table row |
+| `{ "type": "tableHeader", "content": [ paragraph ] }` | Header cell | `\| **header** \|` |
+| `{ "type": "tableCell", "content": [ paragraph ] }` | Data cell | `\| data \|` |
+| `{ "type": "codeBlock", "attrs": { "language": "..." }, "content": [text] }` | Code block | `` ```lang `` |
+| `{ "type": "blockquote", "content": [ paragraph, ... ] }` | Block quote | `> text` |
 | `{ "type": "rule" }` | Horizontal divider | `---` |
+
+### ADF structure reference — Inline nodes and marks
+
+Inline nodes go inside the `content` array of paragraphs, headings, list items, etc.
+
+| ADF inline | Purpose | Markdown equivalent |
+|------------|---------|---------------------|
+| `{ "type": "text", "text": "..." }` | Plain text | text |
+| `{ "type": "text", "text": "...", "marks": [{ "type": "strong" }] }` | **Bold** | `**text**` |
+| `{ "type": "text", "text": "...", "marks": [{ "type": "em" }] }` | *Italic* | `*text*` |
+| `{ "type": "text", "text": "...", "marks": [{ "type": "code" }] }` | `Inline code` | `` `code` `` |
+| `{ "type": "text", "text": "...", "marks": [{ "type": "link", "attrs": { "href": "..." } }] }` | Hyperlink | `[text](url)` |
+
+Marks can be combined: `"marks": [{ "type": "strong" }, { "type": "em" }]` produces ***bold italic***.
 
 ### Full ADF template (PowerShell)
 
@@ -161,6 +180,25 @@ $adf = @'
           "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Second criterion" }] }]
         }
       ]
+    },
+    {
+      "type": "table",
+      "content": [
+        {
+          "type": "tableRow",
+          "content": [
+            { "type": "tableHeader", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Column A" }] }] },
+            { "type": "tableHeader", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Column B" }] }] }
+          ]
+        },
+        {
+          "type": "tableRow",
+          "content": [
+            { "type": "tableCell", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Value 1" }] }] },
+            { "type": "tableCell", "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Value 2" }] }] }
+          ]
+        }
+      ]
     }
   ]
 }
@@ -175,11 +213,50 @@ acli jira workitem edit --key "PROJ-123" --description-file "$env:TEMP\jira-desc
 acli jira workitem comment create --key "PROJ-123" --body-file "$env:TEMP\jira-description.json"
 ```
 
+### ADF Helper Functions (PowerShell)
+
+When building descriptions programmatically, use these helper functions to construct ADF nodes:
+
+```powershell
+# --- ADF builder helpers ---
+function New-AdfText($text, $marks) {
+    $node = @{ type = "text"; text = $text }
+    if ($marks) { $node.marks = $marks }
+    $node
+}
+function New-AdfParagraph($content) {
+    @{ type = "paragraph"; content = @($content) }
+}
+function New-AdfHeading($level, $text) {
+    @{ type = "heading"; attrs = @{ level = $level }; content = @((New-AdfText $text)) }
+}
+function New-AdfBulletList($items) {
+    @{ type = "bulletList"; content = @($items | ForEach-Object {
+        @{ type = "listItem"; content = @((New-AdfParagraph @((New-AdfText $_)))) }
+    }) }
+}
+function New-AdfDoc($content) {
+    @{ version = 1; type = "doc"; content = @($content) }
+}
+
+# --- Usage example ---
+$doc = New-AdfDoc @(
+    (New-AdfHeading 2 "Goal"),
+    (New-AdfParagraph @((New-AdfText "Implement the feature."))),
+    (New-AdfHeading 2 "Acceptance Criteria"),
+    (New-AdfBulletList @("First criterion", "Second criterion"))
+)
+$doc | ConvertTo-Json -Depth 20 | Out-File "$env:TEMP\desc.json" -Encoding UTF8
+acli jira workitem edit --key "PROJ-123" --description-file "$env:TEMP\desc.json" --yes
+```
+
 ### Red Lines — Description Formatting
 
 - ❌ `--description "## Heading\n**Bold** text"` — Markdown not rendered, shows as raw symbols
 - ❌ `--description "Plain text with\nnewlines"` — No formatting at all
-- ✅ Always write ADF JSON to a temp file and use `--description-file`
+- ❌ Stuffing Markdown into a single ADF paragraph text node — same problem, raw `##`/`**`/`-` visible
+- ✅ Always build structured ADF JSON with proper node types (heading, bulletList, table, etc.)
+- ✅ Write ADF JSON to a temp file and use `--description-file` / `--body-file`
 
 ---
 
@@ -520,6 +597,7 @@ acli jira workitem search \
 | Mistake | Why It's Wrong | Correct Approach |
 |---------|---------------|-----------------|
 | Using Markdown in `--description` | Jira Cloud does not render Markdown — raw symbols show up literally | Always build ADF JSON, write to temp file, use `--description-file` |
+| Stuffing Markdown into a single ADF paragraph | Even inside ADF, Markdown text in one paragraph node renders as raw `##`/`**`/`-` | Build separate ADF nodes: headings, bulletLists, tables, etc. |
 | Skipping auth + project selection | Hard-coded keys may be wrong; user must confirm | Always run Steps 1–3 of the Mandatory Startup Workflow |
 | Skipping `acli auth status` | Commands fail silently without auth | Always check auth first |
 | Skipping `acli jira project list` | User may want a different project than assumed | Always list projects and ask before proceeding |
@@ -534,6 +612,7 @@ acli jira workitem search \
 ## Red Flags — If You Catch Yourself Doing This, STOP
 
 - ❌ Using Markdown syntax in `--description` (renders as raw text in Jira)
+- ❌ Putting Markdown text inside a single ADF paragraph node (same result — raw `##`/`**`/`-` visible)
 - ❌ Skipping authentication check
 - ❌ Skipping `acli jira project list` and the project selection question
 - ❌ Hard-coding a project key without asking the user to confirm
