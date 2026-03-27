@@ -12,7 +12,7 @@ copilot plugin marketplace add jomaxso/copilot-marketplace
 
 | Plugin | Description | Version |
 |--------|-------------|---------|
-| [`atlassian`](./plugins/atlassian) | Manage Jira Cloud work items via `acli` — create, edit, search, transition issues with proper ADF formatting | 1.0.0 |
+| [`atlassian`](./plugins/atlassian) | Manage Jira Cloud work items via `acli` and reusable Atlassian agents for review workflows | 1.2.0 |
 
 ## Install a plugin
 
@@ -41,6 +41,8 @@ copilot-marketplace/
     └── atlassian/                 # Atlassian tools plugin
         ├── plugin.json
         ├── README.md
+        ├── agents/
+        │   └── jira.agent.md
         └── skills/
             └── jira/              # Jira management skill
                 ├── SKILL.md
