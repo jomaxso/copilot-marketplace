@@ -42,7 +42,7 @@ copilot-marketplace/
         ├── plugin.json
         ├── README.md
         ├── agents/
-        │   └── jira-ticket-review.agent.md
+        │   └── jira.agent.md
         └── skills/
             └── jira/              # Jira management skill
                 ├── SKILL.md

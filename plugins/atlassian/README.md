@@ -19,7 +19,7 @@ copilot plugin install atlassian@jomaxso-plugins
 
 | Agent | Description |
 |-------|-------------|
-| `jira-ticket-review` | Reusable subagent for reviewing existing Jira issues, refining summaries and descriptions, and validating relations while following the Jira skill workflow |
+| `jira` | Reusable Jira agent for creating, reading, updating, and reviewing Jira issues while following the Jira skill workflow and ADF requirements |
 
 ## Prerequisites
 
@@ -45,6 +45,6 @@ Then ask Copilot to help with Jira — creating stories, editing tickets, search
 
 For Confluence, ask Copilot to create or update pages, search with CQL, manage comments and attachments, and more.
 
-For repeatable Jira review work, use the reusable agent at `agents/jira-ticket-review.agent.md`.
+For reusable Jira issue work, use the `jira` agent at `agents/jira.agent.md`.
 
 
