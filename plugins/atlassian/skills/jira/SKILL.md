@@ -14,6 +14,10 @@ license: MIT
 
 The Atlassian CLI (`acli`) is the official command-line tool for interacting with Jira Cloud. This skill teaches you how to manage Jira work items — **Stories, Epics, Tasks, and Bugs** — directly from the terminal.
 
+Reusable Jira review agent:
+
+- `plugins/atlassian/agents/jira-ticket-review.agent.md`
+
 > **Mandatory workflow before every task:** Check authentication → list projects → ask user to select a project → then execute the task with the selected project key.
 
 **Use this skill when:**
