@@ -1,10 +1,10 @@
 ---
-name: grill-me
-description: Stress-test a plan, design, implementation idea, or requirements draft by interviewing the user relentlessly until you reach shared understanding. Use whenever the user asks to be grilled, wants their thinking challenged, wants to uncover missing requirements, or needs a decision tree walked branch by branch, even if they do not explicitly mention a skill.
+name: grilly
+description: Stress-test a plan, design, implementation idea, or requirements draft by interviewing the user relentlessly until you reach shared understanding. Use whenever the user asks to be grilled, says "grill me", wants their thinking challenged, wants to uncover missing requirements, or needs a decision tree walked branch by branch, even if they do not explicitly mention a skill.
 license: MIT
 ---
 
-# Grill Me
+# Grilly
 
 Interview the user relentlessly about every aspect of the plan or design until you reach shared understanding.
 

@@ -1,0 +1,12 @@
+{
+  "name": "engineering",
+  "description": "Engineering planning and decision-support skills for GitHub Copilot. Includes grilly for stress-testing plans, designs, and implementation ideas until the user reaches shared understanding.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Johannes-Max Sorge",
+    "email": "jomaxso@outlook.com"
+  },
+  "license": "MIT",
+  "keywords": ["engineering", "planning", "design", "requirements", "interview", "grilly", "copilot"],
+  "skills": "skills/"
+}

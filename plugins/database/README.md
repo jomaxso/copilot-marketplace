@@ -5,7 +5,7 @@ Manage MariaDB databases directly from the terminal using the native `mariadb` C
 ## Install
 
 ```bash
-copilot plugin install database@jomaxso-plugins
+copilot plugin install database@jomaxso
 ```
 
 ## Included skills

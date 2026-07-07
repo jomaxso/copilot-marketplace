@@ -1,5 +1,5 @@
 {
-  "name": "jomaxso-plugins",
+  "name": "jomaxso",
   "owner": {
     "name": "Johannes-Max Sorge",
     "email": "jomaxso@outlook.com"
@@ -28,9 +28,9 @@
       ]
     },
     {
-      "name": "grill-me",
-      "source": "grill-me",
-      "description": "Stress-test plans, designs, and implementation ideas by grilling the user with targeted questions until you reach shared understanding.",
+      "name": "engineering",
+      "source": "engineering",
+      "description": "Engineering planning and decision-support skills for GitHub Copilot. Includes grilly for stress-testing plans, designs, and implementation ideas until the user reaches shared understanding.",
       "version": "1.0.0",
       "author": {
         "name": "Johannes-Max Sorge",
@@ -38,11 +38,12 @@
       },
       "license": "MIT",
       "keywords": [
+        "engineering",
         "planning",
         "design",
         "requirements",
         "interview",
-        "grill-me",
+        "grilly",
         "copilot"
       ]
     },

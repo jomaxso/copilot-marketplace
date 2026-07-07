@@ -5,7 +5,7 @@ Manage Jira Cloud work items and Confluence Cloud content directly from the term
 ## Install
 
 ```bash
-copilot plugin install atlassian@jomaxso-plugins
+copilot plugin install atlassian@jomaxso
 ```
 
 ## Included skills
@@ -46,5 +46,4 @@ Then ask Copilot to help with Jira — creating stories, editing tickets, search
 For Confluence, ask Copilot to create or update pages, search with CQL, manage comments and attachments, and more.
 
 For reusable Jira issue work, use the `jira` agent at `agents/jira.agent.md`.
-
 

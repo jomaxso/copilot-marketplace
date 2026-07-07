@@ -5,7 +5,7 @@ Personal GitHub Copilot CLI marketplace with custom plugins, agents, and skills.
 ## Register this marketplace
 
 ```bash
-copilot plugin marketplace add jomaxso/copilot-marketplace
+copilot plugin marketplace add jomaxso/skills
 ```
 
 ## Available plugins
@@ -14,18 +14,18 @@ copilot plugin marketplace add jomaxso/copilot-marketplace
 |--------|-------------|---------|
 | [`atlassian`](./plugins/atlassian) | Manage Jira Cloud work items via `acli` and reusable Atlassian agents for review workflows | 1.2.0 |
 | [`database`](./plugins/database) | Manage MariaDB databases from the terminal using the native `mariadb` CLI client | 1.0.0 |
-| [`grill-me`](./plugins/grill-me) | Stress-test plans, designs, and implementation ideas by grilling the user to uncover missing requirements | 1.0.0 |
+| [`engineering`](./plugins/engineering) | Engineering planning and decision-support skills, including `grilly` for stress-testing ideas and requirements | 1.0.0 |
 
 ## Install a plugin
 
 ```bash
 # From marketplace
-copilot plugin install atlassian@jomaxso-plugins
-copilot plugin install grill-me@jomaxso-plugins
+copilot plugin install atlassian@jomaxso
+copilot plugin install engineering@jomaxso
 
 # Directly from GitHub
-copilot plugin install jomaxso/copilot-marketplace:plugins/atlassian
-copilot plugin install jomaxso/copilot-marketplace:plugins/grill-me
+copilot plugin install jomaxso/skills:plugins/atlassian
+copilot plugin install jomaxso/skills:plugins/engineering
 ```
 
 ## Add a new plugin
@@ -38,7 +38,7 @@ copilot plugin install jomaxso/copilot-marketplace:plugins/grill-me
 ## Repository structure
 
 ```
-copilot-marketplace/
+skills/
 ├── .github/plugin/
 │   └── marketplace.json          # Marketplace manifest (required)
 └── plugins/
