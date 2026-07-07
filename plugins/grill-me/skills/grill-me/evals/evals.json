@@ -1,0 +1,23 @@
+{
+  "skill_name": "grill-me",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Grill me on my plan to add GitHub OAuth login to our internal ASP.NET app. We have local accounts today, HR wants SSO this quarter, and I have not thought through edge cases yet.",
+      "expected_output": "The skill should interrogate requirements, security constraints, rollout concerns, fallback behavior, and operational details until the plan is clearer, while recommending sensible defaults where appropriate.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "I want to reorganize our Copilot plugin marketplace repo so each plugin has better docs and release hygiene. Grill me before I start changing folders around.",
+      "expected_output": "The skill should walk through repo structure, release process, compatibility, naming, migration risks, and success criteria rather than letting the user jump straight into edits.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Please grill me on this API rewrite idea: replace our Node service with Go, keep the same REST contract, and finish before Black Friday. I mostly have gut feel, not a real plan.",
+      "expected_output": "The skill should expose missing delivery assumptions, performance goals, staffing realities, rollout strategy, testing needs, and cutover risk while helping the user sharpen the plan.",
+      "files": []
+    }
+  ]
+}
